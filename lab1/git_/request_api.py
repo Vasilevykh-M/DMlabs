@@ -3,6 +3,7 @@ import requests
 
 from lab1.git_.oauth_api import OAuth
 from lab1.git_.server import Server
+from lab1.utils.to_json import git_json_private
 
 
 class ApiGit():
@@ -44,5 +45,4 @@ class ApiGit():
             "state": "open",
         }
         repos = requests.get(endpoint, headers=headers, params=params).json()
-        for repo in repos:
-            print('repo name: ', repo['name'])
+        git_json_private(repos)

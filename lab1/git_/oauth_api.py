@@ -1,12 +1,15 @@
 import requests
-import server
+from lab1.utils.read_yaml import read_yaml
+
+
 class OAuth():
     
     #приватные параметры для клчиков приложения и ссылки на сервак
     def __init__(self):
-        self._CLIENT_ID = "fb21d87396f88ed06a60"
-        self._CLIENT_SECRET = "38718f76d743f5d89fd148551b2bbdc5af6da990"
-        self._REDIRECT_URI = 'http://localhost:8000/'
+        cfg = read_yaml("conf.yaml")
+        self._CLIENT_ID = cfg["client_id"]
+        self._CLIENT_SECRET = cfg["client_secret"]
+        self._REDIRECT_URI = cfg["redirect_uri"]
 
     def CLIENT_ID(self):
         return self._CLIENT_ID
