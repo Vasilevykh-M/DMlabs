@@ -1,6 +1,8 @@
 import requests
 from lxml import html
 
+from lab2.utils.to_json import to_json
+
 # URL страницы
 url = "https://www.firefly.store/search?q=Rockchip&options%5Bprefix%5D=last"
 
@@ -21,8 +23,14 @@ tree = html.fromstring(response.content)
 product_names = tree.xpath('//a[@class="full-unstyled-link"]')
 prices = tree.xpath('//span[@class="price-item price-item--regular"]/text()')
 
+result = []
+
 # Выводим результаты
 for name, price in zip(product_names, prices):
     print(f"Название: {name.text.strip()}")
     print(f"Цена: {price.strip()}")
     print("-" * 30)
+
+    result.append({"name": name.text.strip(), "price": price.strip()})
+
+to_json(result)
