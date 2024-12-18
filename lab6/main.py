@@ -1,3 +1,5 @@
+import re
+
 from selenium import webdriver
 from selenium.webdriver.chrome.service import Service
 from selenium.webdriver.common.by import By
@@ -19,40 +21,48 @@ service = Service()
 driver = webdriver.Chrome(service=service, options=chrome_options)
 
 # Открытие страницы Gmail
-url = "https://mail.google.com/"
+url = "https://mail.psu.ru/"
 driver.get(url)
 
 # Ввод логина
-email_input = driver.find_element(By.XPATH, '//*[@id="identifierId"]')
-email_input.send_keys('ваш_email@gmail.com')
+email_input = driver.find_element(By.NAME, 'Username')
+email_input.send_keys('vasilevykh00@psu.ru')
 email_input.send_keys(Keys.RETURN)
 
 # Ожидание загрузки страницы ввода пароля
 time.sleep(5)
 
 # Ввод пароля
-password_input = driver.find_element(By.XPATH, '//*[@name="password"]')
-password_input.send_keys('ваш_пароль')
+password_input = driver.find_element(By.NAME, 'Password')
+password_input.send_keys('123456789Aa123Aa')
 password_input.send_keys(Keys.RETURN)
 
 # Ожидание загрузки главной страницы
 time.sleep(10)
 
 # Поиск элементов с письмами
-email_elements = driver.find_elements(By.XPATH, '//*[@class="zA zE"]')
+emails = driver.find_elements(By.XPATH, "//tr[@class='borderbottom']")
 
 # Извлечение данных и сохранение в список словарей
 emails_data = []
-for email_element in email_elements:
-    sender = email_element.find_element(By.XPATH, './/*[@class="zF"]').text
-    subject = email_element.find_element(By.XPATH, './/*[@class="zE"]').text
-    date = email_element.find_element(By.XPATH, './/*[@class="y2"]').text
+for email in emails:
+
+    td_with_second_link = email.find_element(By.XPATH, ".//td[position() = last()-2]//a")
+    td_with_second_link.click()
+
+    time.sleep(5)
+
+    subject_text = driver.find_element(By.XPATH, "//h2[@class='msgSubject padRight']").text
+
+    meta_data = driver.find_element(By.XPATH, "//div[@class='msgHeaders']").text
+
+    sender = re.search(r"От Кого:\s*(.*)", meta_data).group(1)
 
     email_data = {
         "sender": sender,
-        "subject": subject,
-        "date": date
+        "subject": subject_text,
     }
+    print(email_data)
     emails_data.append(email_data)
 
 # Закрытие браузера
