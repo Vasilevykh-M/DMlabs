@@ -40,13 +40,11 @@ password_input.send_keys(Keys.RETURN)
 # Ожидание загрузки главной страницы
 time.sleep(10)
 
-# Поиск элементов с письмами
-emails = driver.find_elements(By.XPATH, "//tr[@class='borderbottom']")
-
 # Извлечение данных и сохранение в список словарей
 emails_data = []
-for email in emails:
-
+for i in range(2):
+    emails = driver.find_elements(By.XPATH, "//tr[@class='borderbottom']")
+    email = emails[i]
     td_with_second_link = email.find_element(By.XPATH, ".//td[position() = last()-2]//a")
     td_with_second_link.click()
 
@@ -62,7 +60,7 @@ for email in emails:
         "sender": sender,
         "subject": subject_text,
     }
-    print(email_data)
+    driver.back()
     emails_data.append(email_data)
 
 # Закрытие браузера
