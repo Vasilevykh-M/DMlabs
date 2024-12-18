@@ -26,7 +26,7 @@ driver.get(url)
 
 # Ввод логина
 email_input = driver.find_element(By.NAME, 'Username')
-email_input.send_keys('vasilevykh00@psu.ru')
+email_input.send_keys('')
 email_input.send_keys(Keys.RETURN)
 
 # Ожидание загрузки страницы ввода пароля
@@ -34,7 +34,7 @@ time.sleep(5)
 
 # Ввод пароля
 password_input = driver.find_element(By.NAME, 'Password')
-password_input.send_keys('123456789Aa123Aa')
+password_input.send_keys('')
 password_input.send_keys(Keys.RETURN)
 
 # Ожидание загрузки главной страницы
